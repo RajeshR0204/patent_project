@@ -23,22 +23,7 @@ llm_repoid = initdict["llm_repoid"]
 llm = HuggingFaceEndpoint(repo_id=llm_repoid,huggingfacehub_api_token=hf_token,temperature=0.9)
 from tavily import TavilyClient
 tavily = TavilyClient(api_key=tavily_api_key)
-# For basic search:
-#response = tavily.search(query="Should I invest in Apple in 2024?")
-# For advanced search:
 
-#response = tavily.search(query="Should I invest in Apple in 2024?", search_depth="advanced")
-
-
-# Get the search results as context to pass an LLM:
-#context = [{"url": obj["url"], "content": obj["content"]} for obj in response.results]
-#tools = load_tools(["serpapi"],llm=llm,serpapi_api_key=serpapi_api_key)   
-#prompt = hub.pull(reactstyle_prompt)
-#agent = create_react_agent(llm, tools, prompt)
-#agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True,handle_parsing_errors=True)
-
-#chat_model = ChatHuggingFace(llm=llm)
-#chat_model_with_stop = chat_model.bind(stop=["\nObservation"])
 
 
 
