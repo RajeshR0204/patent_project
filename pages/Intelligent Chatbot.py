@@ -5,6 +5,7 @@ from langchain.agents import AgentExecutor, create_react_agent, load_tools
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain.agents import initialize_agent, Tool
 from langchain.agents import AgentType
+from tavily import TavilyClient
 
 
 from langchain_community.callbacks.streamlit import (
@@ -20,12 +21,8 @@ reactstyle_prompt = initdict["reactstyle_prompt"]
 tavily_api_key = initdict["tavily_api_key"]
 llm_repoid = initdict["llm_repoid"]
 
-llm = HuggingFaceEndpoint(repo_id=llm_repoid,huggingfacehub_api_token=hf_token,temperature=0.9)
-from tavily import TavilyClient
+#llm = HuggingFaceEndpoint(repo_id=llm_repoid,huggingfacehub_api_token=hf_token,temperature=0.9)
 tavily = TavilyClient(api_key=tavily_api_key)
-
-
-
 
 st.title("PatentGuru - Intelligent Chatbot")
 
