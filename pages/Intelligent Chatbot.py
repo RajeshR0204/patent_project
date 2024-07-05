@@ -1,9 +1,11 @@
 from langchain_community.llms import HuggingFaceEndpoint
 import streamlit as st, Utilities as ut
-from langchain import hub
+from langchain import hub, SerpAPIWrapper
 from langchain.agents import AgentExecutor, create_react_agent, load_tools
 from langchain_community.chat_models.huggingface import ChatHuggingFace
-#from langchain_openai import OpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
 
 from langchain_community.callbacks.streamlit import (
     StreamlitCallbackHandler,
@@ -15,18 +17,30 @@ initdict={}
 initdict = ut.get_tokens()
 hf_token = initdict["hf_token"]
 reactstyle_prompt = initdict["reactstyle_prompt"]
-serpapi_api_key = initdict["serpapi_api_key"]
+tavily_api_key = initdict["tavily_api_key"]
 llm_repoid = initdict["llm_repoid"]
 
-llm = HuggingFaceEndpoint(repo_id=llm_repoid,huggingfacehub_api_token=hf_token,temperature=0.9,verbose=True)
+llm = HuggingFaceEndpoint(repo_id=llm_repoid,huggingfacehub_api_token=hf_token,temperature=0.9)
+from tavily import TavilyClient
+tavily = TavilyClient(api_key=tavily_api_key)
+# For basic search:
+#response = tavily.search(query="Should I invest in Apple in 2024?")
+# For advanced search:
 
-tools = load_tools(["serpapi"],llm=llm,serpapi_api_key=serpapi_api_key)   
-prompt = hub.pull(reactstyle_prompt)
-agent = create_react_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True,handle_parsing_errors=True)
+#response = tavily.search(query="Should I invest in Apple in 2024?", search_depth="advanced")
 
-chat_model = ChatHuggingFace(llm=llm)
-chat_model_with_stop = chat_model.bind(stop=["\nObservation"])
+
+# Get the search results as context to pass an LLM:
+#context = [{"url": obj["url"], "content": obj["content"]} for obj in response.results]
+#tools = load_tools(["serpapi"],llm=llm,serpapi_api_key=serpapi_api_key)   
+#prompt = hub.pull(reactstyle_prompt)
+#agent = create_react_agent(llm, tools, prompt)
+#agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True,handle_parsing_errors=True)
+
+#chat_model = ChatHuggingFace(llm=llm)
+#chat_model_with_stop = chat_model.bind(stop=["\nObservation"])
+
+
 
 st.title("PatentGuru - Intelligent Chatbot")
 
@@ -35,7 +49,9 @@ if prompt := st.chat_input():
     with st.chat_message("assistant"):
         st_callback = StreamlitCallbackHandler(st.container())
         
-        response = agent_executor.invoke(
-            {"input": prompt}, {"callbacks": [st_callback], "handle_parsing_errors":True}
-        )
-        st.write(response["output"])
+        #response = agent_executor.invoke(
+        #    {"input": prompt}, {"callbacks": [st_callback], "handle_parsing_errors":True}
+        #)
+        # response = self_ask_with_search.run(prompt)
+        response = tavily.qna_search(query=prompt)
+        st.write(response)

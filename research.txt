@@ -1,0 +1,80 @@
+https://github.com/c0sogi/LLMChat
+
+dvc - https://dvc.org, https://dvc.org/doc/start
+MLflow - https://mlflow.org/, https://mlflow.org/docs/latest/llms/prompt-engineering/index.html#prompt-engineering
+wandb.ai - https://wandb.ai/site
+
+configure and link above with github such that a push puts all in synch - Github,dvc, MLflow and wandb.ai
+For cookie cutter in Windows: 1) pip install cookie cutter
+2)cookiecutter git@github.com:drivendata/cookiecutter-data-science.git
+Execute 2nd command in a folder e.g. "Some_Folder" in your Windows system and then you can copy content of this folder into your desired folder I.e. MLOPs_Demo
+
+
+Merge master and main
+git checkout main
+git merge master
+git push origin main
+
+venv (WSL)
+file:///C:/Rajesh/AI-ML-Training/MLOPS/m4_mp1_proj/Environment%20File%20instructions.pdf
+
+Docker
+file:///C:/Rajesh/AI-ML-Training/MLOPS/titanic_docker/Dockerize%20and%20push%20FastAPI%20Application/Dockerize%20and%20Push%20Titanic%20FastAPI%20Application.pdf
+
+
+ollama
+https://kush373.medium.com/integrating-ollamas-apis-with-flutter-building-a-conversational-ai-app-local-chatgpt-flutter-42346513d033
+https://abvijaykumar.medium.com/ollama-build-a-chatbot-with-langchain-ollama-deploy-on-docker-5dfcfd140363\
+https://github.com/ivanfioravanti/chatbot-ollama
+https://medium.com/@eugenetan_91090/what-is-ollama-dfdaa40cfbca
+https://otmaneboughaba.com/posts/local-rag-api/
+https://www.davidprat.com/build-production-rag-llamaindex/
+
+
+https://www.youtube.com/watch?v=A_m3tCqdts4
+
+==
+pip install datasets
+
+import tensorflow_datasets as tfds
+from datasets import load_dataset
+tfds = load_dataset("big_patent", "a")
+
+https://colab.research.google.com/github/tensorflow/datasets/blob/master/docs/overview.ipynb#scrollTo=P41qtSpeirqO
+
+https://huggingface.co/datasets/NortheasternUniversity/big_patent
+https://medium.com/@murtuza753/using-llama-2-0-faiss-and-langchain-for-question-answering-on-your-own-data-682241488476
+https://www.geeksforgeeks.org/sentence-similarity-using-bert-transformer/
+https://github.com/ayoolaolafenwa/TrainNLP
+
+ds = load_dataset("big_patent", "a", split="validation")
+
+print(ds.take(1))
+for example in ds.take(1):
+  image, label = example["description"], example["abstract"]
+  print(image)
+  print(label)
+
+
+
+=====
+from transformers import pipeline
+# Use a pipeline as a high-level helper
+#from transformers import pipeline
+
+
+
+pipe = pipeline("fill-mask", model="anferico/bert-for-patents")
+
+#pred_model = pipeline("fill-mask", model = "MLP_TrainedModels")
+
+# Load model directly
+from transformers import AutoModelForMaskedLM
+model = AutoModelForMaskedLM.from_pretrained("anferico/bert-for-patents")
+
+text = "The present invention discloses a space-bound-free [MASK] and its coordinate determining circuit for determining a coordinate of a stylus pen."
+
+preds = pipe(text)
+
+for pred in preds:
+    print(f">>> {pred['sequence']}")
