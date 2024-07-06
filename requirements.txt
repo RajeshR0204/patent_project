@@ -20,3 +20,10 @@ langchain_openai
 datasets
 tensorflow_datasets
 tavily-python
+
+groq
+llama-index
+llama-index-llms-groq
+llama-index-embeddings-huggingface
+streamlit_pdf_viewer
+langchain_groq
