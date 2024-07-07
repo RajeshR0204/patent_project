@@ -4,10 +4,10 @@ from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredFileLoader, DirectoryLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.llms import HuggingFaceHub
+#from langchain.llms import HuggingFaceHub
 from langchain.vectorstores import Chroma
 from langchain_community.vectorstores import Chroma
-from langchain.chains import ConversationalRetrievalChain
+#from langchain.chains import ConversationalRetrievalChain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import sys,yaml,Utilities as ut
 
@@ -26,7 +26,7 @@ def load_pdf(filename):
    chromadbpath = initdict["chatPDF_chroma_db"]
    
    embeddings = HuggingFaceEmbeddings(model_name=embedding_model_id)
-   loader = DirectoryLoader('tempDir/', glob="**/*.pdf", show_progress=True, loader_cls=UnstructuredFileLoader)
+   loader = DirectoryLoader('./tempDir/', glob="**/*.pdf", show_progress=True, loader_cls=UnstructuredFileLoader)
 
    documents = loader.load()
    
@@ -53,7 +53,7 @@ pdf_file = st.file_uploader("Upload PDF file", type=('pdf'), key='pdf')
 if ss.pdf:
     ss.pdf_ref = ss.pdf  # backup
     #print (os.path.join(".\tempDir",ss.pdf_ref.name))
-    with open((os.path.join("tempDir",ss.pdf_ref.name)),"wb") as f: 
+    with open((os.path.join("./tempDir",ss.pdf_ref.name)),"wb") as f: 
         f.write(ss.pdf.getbuffer())
     st.success("Saved File")
     

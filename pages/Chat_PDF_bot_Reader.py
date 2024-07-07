@@ -1,27 +1,28 @@
 # import required libraries
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import CharacterTextSplitter
+#from langchain.document_loaders import PyPDFLoader
+#from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.llms import HuggingFaceHub
+#from langchain.llms import HuggingFaceHub
 from langchain.vectorstores import Chroma
 from langchain_community.vectorstores import Chroma
 from langchain.chains import ConversationalRetrievalChain
 #from langchain.text_splitter import NLTKTextSplitter
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+#from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain_core.prompts import ChatPromptTemplate
+#from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from streamlit import session_state as ss
 from streamlit_pdf_viewer import pdf_viewer
+import Utilities as ut
 
 from groq import Groq
 
 import streamlit as st
-import sys,yaml,Utilities as ut
+import sys,yaml
 
 custom_prompt_template = """Use the following pieces of information to answer the user's question.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
@@ -58,7 +59,7 @@ def get_data(query):
     hf_token = initdict["hf_token"]
     embedding_model_id = initdict["embedding_model"]
     chromadbpath = initdict["chatPDF_chroma_db"]
-    llm_repo_id = initdict["llm_repoid"]
+    llm_repo_id = initdict["pdf_chat_model"]
     groq_api_key = initdict["groq_api"]
     
     # We will use HuggingFace embeddings 
@@ -66,6 +67,7 @@ def get_data(query):
 
     #retriever = db.as_retriever(search_type="mmr", search_kwargs={'k': 1})
     # load from disk
+    print(chromadbpath)
     db = Chroma(persist_directory=chromadbpath, embedding_function=embeddings)
     retriever = db.as_retriever(search_type="mmr", search_kwargs={'k': 2})
     # Callbacks support token-wise streaming
@@ -82,7 +84,7 @@ def get_data(query):
     # Initialize a ChatGroq object with a temperature of 0 and the "mixtral-8x7b-32768" model.
     prompt = set_custom_prompt()
 
-    chat_model = ChatGroq(temperature=0, model_name="llama3-70b-8192",api_key=groq_api_key)
+    chat_model = ChatGroq(temperature=0, model_name=llm_repo_id,api_key=groq_api_key)
 
 
     qa = RetrievalQA.from_chain_type(llm=chat_model,
@@ -107,7 +109,7 @@ if submit_button:
         st.write("Cleared previous chat history")
     
     response = get_data(query)
-    #print(response)
+    print(response)
     
     if len(response)>0:
         st.write(response['result'])

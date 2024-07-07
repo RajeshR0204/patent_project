@@ -1,0 +1,33 @@
+#langchain_huggingface
+#langchain-experimental
+#llama-cpp-python
+unstructured
+unstructured[pdf]
+psutil
+
+# for wikipedia as a tool
+#wikipedia
+chromadb
+#gradio
+#seaborn
+
+# for google-search as a tool
+#google-search-results
+#langchainhub
+streamlit
+#accelerate
+langchain
+langchain_community
+langchain_chroma
+sentence-transformers
+#langchain_openai
+#datasets
+#tensorflow_datasets
+#tavily-python
+
+groq
+llama-index
+llama-index-llms-groq
+#llama-index-embeddings-huggingface
+streamlit_pdf_viewer
+langchain_groq
