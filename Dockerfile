@@ -21,7 +21,7 @@ ADD /data/*.* ./data/
 RUN pip install --upgrade pip
 
 # install dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r requirements1.txt
 
 #RUN rm *.whl
 

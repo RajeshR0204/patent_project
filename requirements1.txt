@@ -31,3 +31,4 @@ llama-index-llms-groq
 #llama-index-embeddings-huggingface
 streamlit_pdf_viewer
 langchain_groq
+PyPDF2
