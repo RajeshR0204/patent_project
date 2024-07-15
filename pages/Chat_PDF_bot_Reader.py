@@ -70,7 +70,7 @@ def get_data(query):
     query_vector = embedding_model.encode(query).tolist()
     output = collection.query(
         query_embeddings=[query_vector],
-        n_results=5,
+        n_results=1,
         #where={"distances": "is_less_than_1"},
         include=['documents','distances'],
         
@@ -84,20 +84,20 @@ def get_data(query):
 st.title("PatentGuru PDF Reader")
 
 # Main chat form
-with st.form("chat_form"):
-    query = st.text_input("Chat with PDF: ")
-    clear_history = st.checkbox('Clear previous chat history') 
-    submit_button = st.form_submit_button("Send")    
 
-if submit_button:
+#query = st.chat_input()
+clear_history = st.checkbox('Clear previous chat history') 
+
+if query := st.chat_input():
     if clear_history:
         st.write("Cleared previous chat history")
     
+    st.chat_message("user").write(query)
     response = get_data(query)
     print(response)
     
     if len(response)>0:
-        prompt= 'Answer the question'+ query + 'from the following context:' + response
+        prompt= 'Answer the question'+ query + 'only if its available in the provided context. Do not provide answer if it is not available in the provided context. The provided context is:' + response
         messages.append({"role": "user", "content": prompt})
         chat_completion = client.chat.completions.create(
         messages=messages,
@@ -107,7 +107,7 @@ if submit_button:
         st.write(response)
         # Add the response to the messages as an Assistant Role
         messages.append({"role": "assistant", "content": response})
-                  
+    
     else: 
         # write results
         st.write ("No results")
