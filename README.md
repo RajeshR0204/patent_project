@@ -28,3 +28,7 @@ Run the prometheus docker
 Run the grafana docker
 
 Plot graph in grafana, set alerts etc
+
+Run Prometheus (local mount of prometheus.yml) - command (use IP from ipconfig)
+docker run --name prometheus -d -v /path/to/prometheus.yml:\prometheus.yml -p 172.29.224.1:9090:9090 prom/prometheus
+
