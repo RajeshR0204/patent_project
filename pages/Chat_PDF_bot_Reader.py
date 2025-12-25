@@ -50,6 +50,7 @@ def filterdistance(distcoll):
            
 
 def get_data(query):
+    print (query)
     chat_history = []
     initdict={}
     initdict = ut.get_tokens()
